@@ -1,10 +1,11 @@
 NAME := philo
-CC := clang
+CC := cc
 OBJ_DIR := obj
 
 CFLAGS := -Wall -Wextra -Werror -g
 CPPFLAGS := -MMD
-S_FLAGS := -fsanitize=address
+# S_FLAGS := -fsanitize=address
+S_FLAGS = -fsanitize=thread
 			
 SRC := 	main.c
 
