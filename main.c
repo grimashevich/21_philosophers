@@ -6,21 +6,15 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/15 20:18:23 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/20 14:48:13 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <fcntl.h>
-
-#include <pthread.h>
+#include "philo.h"
 
 #include <string.h>
 
-typedef pthread_mutex_t t_mutex;
+
 
 typedef struct s_philo
 {
