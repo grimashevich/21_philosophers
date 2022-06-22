@@ -7,7 +7,7 @@ CPPFLAGS := -MMD
 # S_FLAGS := -fsanitize=address
 S_FLAGS = -fsanitize=thread
 			
-SRC := 	main.c
+SRC := 	main.c	philo01.c
 
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 

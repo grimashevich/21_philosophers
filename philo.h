@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/20 15:24:42 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/22 14:11:23 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ enum e_state
 	THINKING
 };
 
-
 typedef struct s_phil
 {
 	int				id;
-	e_state			state;
+	enum e_state	state;
 	struct s_phil	*next;
 	struct s_phil	*prev;
-	t_mutex			fork;
+	t_mutex			*l_fork;
+	t_mutex			*r_fork;
 } t_phil;
 
 typedef struct s_philos

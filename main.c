@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/20 14:48:13 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/22 14:22:05 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 
 
-typedef struct s_philo
+/* typedef struct s_philo
 {
 	t_mutex	mutex;
 	int		num;
@@ -27,12 +27,13 @@ void error_exit(char *msg)
 {
 	printf("%s\n", msg);
 	exit(1);
-}
+} */
 
 /*SOME DESCRIPTION*/
+/*
 void	*hello_thread(void *data)
 {
-	char *result;
+ 	char *result;
 	
 	t_philo	*ph1 = data;
 	result = strdup("+++Result from hello thread+++");
@@ -51,12 +52,25 @@ void	*hello_thread(void *data)
 	}
 	// printf("kek\n");
 	//pthread_mutex_unlock(&ph1->mutex);
-	return result;
+	return result; 
+}
+*/
+
+void func1(void)
+{
+	static int i = 0;
+	printf("i = %d\n", i++);
+	
 }
 
 int main(void)
 {
-	pthread_t	id;
+
+	func1();
+	func1();
+	func1();
+	func1();
+/* 	pthread_t	id;
 	int			status;
 	t_philo		*ph1;
 
@@ -78,5 +92,5 @@ int main(void)
 	}
 	//pthread_mutex_unlock(&ph1->mutex);
 	status = pthread_join(id, NULL);
-	return (0);
+	return (0); */
 }
