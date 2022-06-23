@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/22 14:11:23 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/23 16:27:37 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,17 @@ typedef struct s_phil
 	struct s_phil	*prev;
 	t_mutex			*l_fork;
 	t_mutex			*r_fork;
-} t_phil;
+}	t_phil;
 
-typedef struct s_philos
+typedef struct s_table
 {
-	t_phil	*phil;
+	t_phil	*first_phil;
+	t_mutex	*print_mutex;
+	int		someone_die;
+	t_mutex	*someone_die_mutex;
+}	t_table;
 
-} t_philo;
-
-
+t_phil	*create_phil(void);
+void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil);
 
 #endif // PHILO_H

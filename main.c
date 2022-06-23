@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/22 14:22:05 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/23 14:31:42 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,21 @@ void	*hello_thread(void *data)
 }
 */
 
-void func1(void)
-{
-	static int i = 0;
-	printf("i = %d\n", i++);
-	
-}
 
 int main(void)
 {
+	t_phil	*first_phil;
+	int		i;
 
-	func1();
-	func1();
-	func1();
-	func1();
+	first_phil = create_phil();
+	i = 1;
+	while (i <= 5)
+	{
+		add_phil_to_table(first_phil, create_phil());
+		i++;
+	}
+	printf("OK\n");
+	
 /* 	pthread_t	id;
 	int			status;
 	t_philo		*ph1;
