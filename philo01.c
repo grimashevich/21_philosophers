@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:25:20 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/23 16:08:31 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/24 19:55:37 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,26 @@ void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil)
 	first_phil->l_fork = new_phil->r_fork;
 }
 
-void	phil_say()
+
+//TODO CHECK IT
+void	phil_say_state(t_table *table, t_phil *phil, int taking_fork)
+{
+	long	cur_time;
+
+	pthread_mutex_lock(table->print_mutex);
+	cur_time = get_miliseconds(table->timeval) - table->start_time;
+	if (taking_fork)
+		printf("%ld %d has taken a fork\n", cur_time, phil->id);
+	else if (phil->state == EATING)
+		printf("%ld %d  is eating\n", cur_time, phil->id);
+	else if (phil->state == SLEEPING)
+		printf("%ld %d  is sleeping\n", cur_time, phil->id);
+	else if (phil->state == THINKING)
+		printf("%ld %d  is thinking\n", cur_time, phil->id);
+	else if (phil->state == DIED)
+		printf("%ld %d  is died\n", cur_time, phil->id);
+	pthread_mutex_unlock(table->print_mutex);
+}
 
 void	switch_life_state(t_phil *phil)
 {

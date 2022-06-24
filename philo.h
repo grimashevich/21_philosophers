@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/23 16:27:37 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/24 19:54:56 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,17 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 typedef pthread_mutex_t t_mutex;
+typedef struct timeval	t_timeval;
 
 enum e_state
 {
 	EATING,
 	SLEEPING,
-	THINKING
+	THINKING,
+	DIED
 };
 
 typedef struct s_phil
@@ -41,13 +44,16 @@ typedef struct s_phil
 
 typedef struct s_table
 {
-	t_phil	*first_phil;
-	t_mutex	*print_mutex;
-	int		someone_die;
-	t_mutex	*someone_die_mutex;
+	t_phil		*first_phil;
+	t_mutex		*print_mutex;
+	int			someone_die;
+	t_mutex		*someone_die_mutex;
+	t_timeval	*timeval;
+	long	start_time;
 }	t_table;
 
 t_phil	*create_phil(void);
 void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil);
+long	get_miliseconds(t_timeval *timeval);
 
 #endif // PHILO_H

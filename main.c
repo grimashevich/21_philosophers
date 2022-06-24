@@ -6,13 +6,14 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/23 14:31:42 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/24 19:42:37 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 #include <string.h>
+
+t_table	*table_init(void);
 
 
 
@@ -60,8 +61,11 @@ void	*hello_thread(void *data)
 int main(void)
 {
 	t_phil	*first_phil;
-	int		i;
+	t_table	*table;
 
+	table = table_init();
+	printf("Start time: %ld\n", table->start_time);
+	int		i;
 	first_phil = create_phil();
 	i = 1;
 	while (i <= 5)
@@ -69,7 +73,9 @@ int main(void)
 		add_phil_to_table(first_phil, create_phil());
 		i++;
 	}
-	printf("OK\n");
+	usleep(1000000);
+	printf("Run time: %ld\n", get_miliseconds(table->timeval) - table->start_time);
+	printf("END\n");
 	
 /* 	pthread_t	id;
 	int			status;
