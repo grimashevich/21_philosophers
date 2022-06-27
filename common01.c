@@ -6,13 +6,12 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:07:47 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/24 19:36:04 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/27 15:49:52 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//FIXME ОСТАНОВИЛСЯ ТУТ
 void	*free_table_return_null(void *to_free1, void *to_free2)
 {
 	if (to_free1)
@@ -53,4 +52,16 @@ t_table	*table_init(void)
 	table->someone_die = 0;
 	table->start_time = get_miliseconds(table->timeval);
 	return (table);
+}
+
+/* sleep in miliseconds */
+void	my_sleep(t_table *table, int miliseconds)
+{
+	long	start;
+
+	start = get_miliseconds(table->timeval);
+	while (get_miliseconds(table->timeval) - start < miliseconds)
+	{
+		usleep(100);
+	}
 }

@@ -6,14 +6,14 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:25:20 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/24 19:55:37 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/27 18:36:01 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 
-t_phil	*create_phil(void)
+t_phil	*create_phil(t_table *table)
 {
 	t_phil		*phil;
 	static int	id = 1;
@@ -33,6 +33,7 @@ t_phil	*create_phil(void)
 	phil->prev = NULL;
 	phil->l_fork = NULL;
 	pthread_mutex_init(phil->r_fork, NULL);
+	phil->last_eat_time = get_miliseconds(table->timeval);
 	return (phil);
 }
 
@@ -59,8 +60,6 @@ void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil)
 	first_phil->l_fork = new_phil->r_fork;
 }
 
-
-//TODO CHECK IT
 void	phil_say_state(t_table *table, t_phil *phil, int taking_fork)
 {
 	long	cur_time;
@@ -80,14 +79,8 @@ void	phil_say_state(t_table *table, t_phil *phil, int taking_fork)
 	pthread_mutex_unlock(table->print_mutex);
 }
 
-void	switch_life_state(t_phil *phil)
+void	switch_life_state(t_table *table, t_phil *phil)
 {
 	phil->state = (phil->state + 1) % 3;
-
-	if (phil->state == THINKING)
-}
-
-void	*phil_life(void *data)
-{
-
+	phil_say_state(table, phil, 0);
 }

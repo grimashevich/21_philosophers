@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/24 19:42:37 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/27 18:35:25 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,14 @@ int main(void)
 	table = table_init();
 	printf("Start time: %ld\n", table->start_time);
 	int		i;
-	first_phil = create_phil();
+	first_phil = create_phil(table);
 	i = 1;
 	while (i <= 5)
 	{
-		add_phil_to_table(first_phil, create_phil());
+		add_phil_to_table(first_phil, create_phil(table));
 		i++;
 	}
-	usleep(1000000);
+	my_sleep(table, 2563);
 	printf("Run time: %ld\n", get_miliseconds(table->timeval) - table->start_time);
 	printf("END\n");
 	
