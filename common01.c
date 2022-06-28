@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:07:47 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/27 15:49:52 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/28 14:01:37 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,18 @@ long	get_miliseconds(t_timeval *timeval)
 	return (timeval->tv_sec * 1000 + timeval->tv_usec / 1000);
 }
 
-t_table	*table_init(void)
+t_table *table_init2(int argc, char **argv, t_table *table)
+{
+	table->phils_count = ft_atoi(argv[1]);
+	table->time_to_die = ft_atoi(argv[2]);
+	table->time_to_eat = ft_atoi(argv[3]);
+	table->time_to_sleap = ft_atoi(argv[4]);
+	if (argc >= 6)
+		table->notepme = ft_atoi(argv[5]);
+	return (table);
+}
+
+t_table	*table_init(int argc, char **argv)
 {
 	t_table	*table;
 
@@ -51,7 +62,7 @@ t_table	*table_init(void)
 	table->first_phil = NULL;
 	table->someone_die = 0;
 	table->start_time = get_miliseconds(table->timeval);
-	return (table);
+	return (table_init2(argc, argv, table));
 }
 
 /* sleep in miliseconds */

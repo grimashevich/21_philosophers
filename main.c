@@ -6,16 +6,16 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/27 18:35:25 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/28 19:43:11 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <string.h>
 
-t_table	*table_init(void);
-
-
+t_table *table_init(int argc, char **argv);
+void	*launch_phil(void *data);
+void	check_filo_status(t_table *table);
 
 /* typedef struct s_philo
 {
@@ -57,25 +57,95 @@ void	*hello_thread(void *data)
 }
 */
 
+int	check_args(int argc, char **argv)
+{
+	if (argc < 5)
+		return (0);
+	if (argc > 6)
+		argc = 6;
+	while (argc > 1)
+	{
+		if (! is_numeric(argv[--argc]))
+			return (0);
+	}
+	return (1);	
+}
 
-int main(void)
+t_phil	*create_philos(t_table *table)
 {
 	t_phil	*first_phil;
-	t_table	*table;
-
-	table = table_init();
-	printf("Start time: %ld\n", table->start_time);
 	int		i;
+
 	first_phil = create_phil(table);
 	i = 1;
-	while (i <= 5)
+	while (i < table->phils_count)
 	{
 		add_phil_to_table(first_phil, create_phil(table));
 		i++;
 	}
-	my_sleep(table, 2563);
-	printf("Run time: %ld\n", get_miliseconds(table->timeval) - table->start_time);
-	printf("END\n");
+	return (first_phil);
+}
+
+/*
+Try to create threads
+Return 1 of some error occured, 0 if all ok
+*/
+int	create_threads(t_table *table)
+{
+	t_phil		*phil;
+	t_transfer	*transfer;
+	int			n;
+	int			status;
+
+	phil = table->first_phil;
+	n = 1;
+	while (n <= table->phils_count)
+	{
+		transfer = malloc(sizeof(t_transfer));
+		transfer->table = table;
+		transfer->phil = phil;
+		status = pthread_create(&(phil->thread_id), NULL, launch_phil, transfer);
+		if (status != 0)
+			return (1);
+		phil = phil->next;
+		n++;
+	}
+	return (0);
+}
+
+void	join_threads(t_table *table)
+{
+	t_phil		*phil;
+	int			n;
+
+	phil = table->first_phil;
+	n = 1;
+	while (n <= table->phils_count)
+	{
+		if (phil->thread_id != 0)
+			pthread_join(phil->thread_id, NULL);
+		phil = phil->next;
+		n++;
+	}
+}
+
+int main(int argc, char **argv)
+{
+	t_table		*table;
+
+	if (check_args(argc, argv) == 0)
+	{
+		printf("Bad arguments\n");
+		return (1);
+	}
+	table = table_init(argc, argv);
+	table->first_phil = create_philos(table);
+	if (create_threads(table) == 0)
+	{
+		check_filo_status(table);
+	}
+	join_threads(table);
+
 	
 /* 	pthread_t	id;
 	int			status;

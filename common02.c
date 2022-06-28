@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 19:01:32 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/27 19:03:10 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/28 13:45:19 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,14 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		i++;
 	}
 	return (ncmp_result((unsigned char) s1[i - 1] - (unsigned char) s2[i - 1]));
+}
+
+int	is_numeric(char *str)
+{
+	while (*str)
+	{
+		if (! ft_isdigit(*(str++)))
+			return (0);
+	}
+	return (1);
 }

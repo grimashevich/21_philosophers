@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/27 18:58:15 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/28 17:58:33 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ enum e_state
 typedef struct s_phil
 {
 	int				id;
+	pthread_t		thread_id;
 	enum e_state	state;
 	struct s_phil	*next;
 	struct s_phil	*prev;
 	t_mutex			*l_fork;
 	t_mutex			*r_fork;
 	long			last_eat_time;
+	int				eat_count;
+	t_mutex			*eat_count_mutex;
 }	t_phil;
 
 typedef struct s_table
@@ -54,6 +57,7 @@ typedef struct s_table
 	t_mutex		*someone_die_mutex;
 	t_timeval	*timeval;
 	long		start_time;
+	int			phils_count;
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleap;
@@ -66,10 +70,13 @@ typedef struct	s_transfer
 	t_phil	*phil;
 }	t_transfer;
 
+int		is_numeric(char *str);
+int		ft_atoi(const char *str);
 t_phil	*create_phil(t_table *table);
 void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil);
 long	get_miliseconds(t_timeval *timeval);
 void	phil_say_state(t_table *table, t_phil *phil, int taking_fork);
 void	my_sleep(t_table *table, int miliseconds);
+int		check_someone_died(t_table *table);
 
 #endif // PHILO_H

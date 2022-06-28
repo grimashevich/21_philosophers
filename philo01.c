@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:25:20 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/27 18:36:01 by EClown           ###   ########.fr       */
+/*   Updated: 2022/06/28 19:43:31 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,15 @@ t_phil	*create_phil(t_table *table)
 		return (NULL);
 	}
 	phil->id = id++;
+	phil->thread_id = 0;
 	phil->state = THINKING;
 	phil->next = NULL;
 	phil->prev = NULL;
-	phil->l_fork = NULL;
 	pthread_mutex_init(phil->r_fork, NULL);
+	phil->l_fork = phil->r_fork;
+	phil->eat_count_mutex = malloc(sizeof(t_mutex));
+	pthread_mutex_init(phil->eat_count_mutex, NULL);
+	phil->eat_count = 0;
 	phil->last_eat_time = get_miliseconds(table->timeval);
 	return (phil);
 }
@@ -83,4 +87,11 @@ void	switch_life_state(t_table *table, t_phil *phil)
 {
 	phil->state = (phil->state + 1) % 3;
 	phil_say_state(table, phil, 0);
+}
+
+void	increase_eat_count(t_phil *phil)
+{
+	pthread_mutex_lock(phil->eat_count_mutex);
+	phil->eat_count++;
+	pthread_mutex_unlock(phil->eat_count_mutex);
 }
