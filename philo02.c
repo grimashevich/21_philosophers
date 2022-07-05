@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 14:14:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/28 19:45:30 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/05 16:12:54 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,16 @@ void	put_forks_back(t_table *table, t_phil *phil)
 		pthread_mutex_unlock(phil->l_fork);
 		pthread_mutex_unlock(phil->r_fork);
 	}
+	pthread_mutex_lock(phil->last_eat_time_mutex);
 	phil->last_eat_time = get_miliseconds(table->timeval);
+	pthread_mutex_unlock(phil->last_eat_time_mutex);
 }
 
 void	phil_dies(t_table *table, t_phil *phil)
 {
+	pthread_mutex_lock(phil->state_mutex);
 	phil->state = DIED;
+	pthread_mutex_unlock(phil->state_mutex);
 	phil_say_state(table, phil, 0);
 	pthread_mutex_lock(table->someone_die_mutex);
 	table->someone_die = 1;
@@ -61,12 +65,10 @@ void	phil_dies(t_table *table, t_phil *phil)
 void	phil_life(t_table *table, t_phil *phil)
 {
 	if (phil->id % 2 == 0)
-		my_sleep(table, 100);
+		my_sleep(table, table->time_to_eat);
 	while (1)
 	{
 		take_forks(table, phil);
-		if (died_of_hunger(table, phil))
-			break;
 		switch_life_state(table, phil);
 		my_sleep(table, table->time_to_eat);
 		put_forks_back(table, phil);

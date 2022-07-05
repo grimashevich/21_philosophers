@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/28 19:43:11 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/05 15:00:50 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,9 @@ int main(int argc, char **argv)
 	{
 		check_filo_status(table);
 	}
-	join_threads(table);
+	detouch_threads(table);
 
+	return (0);
 	
 /* 	pthread_t	id;
 	int			status;

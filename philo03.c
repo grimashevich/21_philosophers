@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 16:32:27 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/28 18:16:46 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/05 16:33:04 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ void	phil_dies(t_table *table, t_phil *phil);
 
 int	died_of_hunger(t_table *table, t_phil *phil)
 {
+	pthread_mutex_lock(phil->last_eat_time_mutex);
 	if (get_miliseconds(table->timeval) - phil->last_eat_time > table->time_to_die)
 	{
+		pthread_mutex_unlock(phil->last_eat_time_mutex);		
 		phil_dies(table, phil);
 		return (1);
 	}
+	pthread_mutex_unlock(phil->last_eat_time_mutex);
 	return (0);
 }
 
@@ -54,13 +57,38 @@ int check_all_eat_well(t_table *table)
 		}
 		pthread_mutex_unlock(phil->eat_count_mutex);
 		phil = phil->next;
+		n++;
 	}
+	pthread_mutex_lock(table->print_mutex);
+	printf("\n ALL EAT WELL\n"); //TODO DELETE IT
 	return (1);
 }
 
 void	check_filo_status(t_table *table)
 {
-	check_someone_died(table);
-	check_all_eat_well(table);
-	usleep(500);
+	t_phil	*phil;
+	int		i;
+
+	while (1)
+	{
+		i = 0;
+		phil = table->first_phil;
+		while (i < table->phils_count)
+		{
+			if (died_of_hunger(table, phil))
+				return ;
+			phil = phil->next;
+			i++;
+		}
+		if (check_all_eat_well(table))
+			return ;
+		usleep(500);
+	}
+}
+
+void	increase_eat_count(t_phil *phil)
+{
+	pthread_mutex_lock(phil->eat_count_mutex);
+	phil->eat_count++;
+	pthread_mutex_unlock(phil->eat_count_mutex);
 }

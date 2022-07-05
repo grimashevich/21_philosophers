@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/28 17:58:33 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/05 16:26:49 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,13 @@ typedef struct s_phil
 	int				id;
 	pthread_t		thread_id;
 	enum e_state	state;
+	t_mutex			*state_mutex;
 	struct s_phil	*next;
 	struct s_phil	*prev;
 	t_mutex			*l_fork;
 	t_mutex			*r_fork;
 	long			last_eat_time;
+	t_mutex			*last_eat_time_mutex;
 	int				eat_count;
 	t_mutex			*eat_count_mutex;
 }	t_phil;
@@ -78,5 +80,7 @@ long	get_miliseconds(t_timeval *timeval);
 void	phil_say_state(t_table *table, t_phil *phil, int taking_fork);
 void	my_sleep(t_table *table, int miliseconds);
 int		check_someone_died(t_table *table);
+void	detouch_threads(t_table *table);
+void	increase_eat_count(t_phil *phil);
 
 #endif // PHILO_H
