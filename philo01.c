@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:25:20 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/05 16:30:04 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:31:13 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil)
 		new_phil->next = first_phil;
 		new_phil->prev = first_phil;
 		new_phil->l_fork = first_phil->r_fork;
-		return;
+		return ;
 	}
 	last_phil = first_phil->prev;
 	new_phil->next = first_phil;

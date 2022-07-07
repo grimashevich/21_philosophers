@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:07:47 by EClown            #+#    #+#             */
-/*   Updated: 2022/06/28 14:01:37 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:33:54 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ long	get_miliseconds(t_timeval *timeval)
 	return (timeval->tv_sec * 1000 + timeval->tv_usec / 1000);
 }
 
-t_table *table_init2(int argc, char **argv, t_table *table)
+t_table	*table_init2(int argc, char **argv, t_table *table)
 {
 	table->phils_count = ft_atoi(argv[1]);
 	table->time_to_die = ft_atoi(argv[2]);

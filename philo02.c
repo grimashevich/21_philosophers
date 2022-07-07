@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 14:14:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/05 16:12:54 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:35:53 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,14 @@ void	take_forks(t_table *table, t_phil *phil)
 		pthread_mutex_lock(phil->l_fork);
 		phil_say_state(table, phil, 1);
 	}
+	pthread_mutex_lock(phil->last_eat_time_mutex);
+	phil->last_eat_time = get_miliseconds(table->timeval);
+	pthread_mutex_unlock(phil->last_eat_time_mutex);
 }
 
 void	put_forks_back(t_table *table, t_phil *phil)
 {
-	if (phil->id > phil->next->id)
+	if (phil->id == table->phils_count)
 	{
 		pthread_mutex_unlock(phil->r_fork);
 		pthread_mutex_unlock(phil->l_fork);
@@ -46,9 +49,6 @@ void	put_forks_back(t_table *table, t_phil *phil)
 		pthread_mutex_unlock(phil->l_fork);
 		pthread_mutex_unlock(phil->r_fork);
 	}
-	pthread_mutex_lock(phil->last_eat_time_mutex);
-	phil->last_eat_time = get_miliseconds(table->timeval);
-	pthread_mutex_unlock(phil->last_eat_time_mutex);
 }
 
 void	phil_dies(t_table *table, t_phil *phil)
@@ -85,7 +85,7 @@ void	*launch_phil(void *data)
 {
 	t_transfer	*transfer;
 
-	transfer = (t_transfer	*)data;
+	transfer = (t_transfer *)data;
 	phil_life(transfer->table, transfer->phil);
 	free(data);
 	return (NULL);

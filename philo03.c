@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 16:32:27 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/05 16:33:04 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:32:08 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,22 @@ void	phil_dies(t_table *table, t_phil *phil);
 
 int	died_of_hunger(t_table *table, t_phil *phil)
 {
+	long	cur_time;
+
 	pthread_mutex_lock(phil->last_eat_time_mutex);
-	if (get_miliseconds(table->timeval) - phil->last_eat_time > table->time_to_die)
+	if (get_miliseconds(table->timeval)
+		- phil->last_eat_time > table->time_to_die)
 	{
-		pthread_mutex_unlock(phil->last_eat_time_mutex);		
-		phil_dies(table, phil);
+		pthread_mutex_lock(table->print_mutex);
+		pthread_mutex_lock(phil->state_mutex);
+		phil->state = DIED;
+		pthread_mutex_unlock(phil->state_mutex);
+		cur_time = get_miliseconds(table->timeval) - table->start_time;
+		printf("%ld %d died\n", cur_time, phil->id);
+		pthread_mutex_lock(table->someone_die_mutex);
+		table->someone_die = 1;
+		pthread_mutex_unlock(table->someone_die_mutex);
+		pthread_mutex_unlock(phil->last_eat_time_mutex);
 		return (1);
 	}
 	pthread_mutex_unlock(phil->last_eat_time_mutex);
@@ -38,7 +49,7 @@ int	check_someone_died(t_table *table)
 }
 
 /* Return 1 if all philos eat needed times */
-int check_all_eat_well(t_table *table)
+int	check_all_eat_well(t_table *table)
 {
 	int		n;
 	t_phil	*phil;
@@ -60,7 +71,6 @@ int check_all_eat_well(t_table *table)
 		n++;
 	}
 	pthread_mutex_lock(table->print_mutex);
-	printf("\n ALL EAT WELL\n"); //TODO DELETE IT
 	return (1);
 }
 

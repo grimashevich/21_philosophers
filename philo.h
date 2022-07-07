@@ -6,25 +6,24 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/05 16:26:49 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:33:09 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <pthread.h>
-#include <sys/time.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <pthread.h>
+# include <sys/time.h>
 
 # define LLI_MIN "9223372036854775808"
 # define LLI_MAX "9223372036854775807"
 
-typedef pthread_mutex_t t_mutex;
+typedef pthread_mutex_t	t_mutex;
 typedef struct timeval	t_timeval;
 
 enum e_state
@@ -66,7 +65,7 @@ typedef struct s_table
 	int			notepme;
 }	t_table;
 
-typedef struct	s_transfer
+typedef struct s_transfer
 {
 	t_table	*table;
 	t_phil	*phil;
