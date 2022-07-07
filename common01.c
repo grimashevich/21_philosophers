@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:07:47 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/07 14:33:54 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/07 15:03:43 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_table	*table_init2(int argc, char **argv, t_table *table)
 	table->time_to_die = ft_atoi(argv[2]);
 	table->time_to_eat = ft_atoi(argv[3]);
 	table->time_to_sleap = ft_atoi(argv[4]);
+	table->notepme = -1;
 	if (argc >= 6)
 		table->notepme = ft_atoi(argv[5]);
 	return (table);

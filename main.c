@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/07 14:35:24 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/07 15:10:38 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 t_table	*table_init(int argc, char **argv);
 void	*launch_phil(void *data);
 void	check_filo_status(t_table *table);
+int		free_table(t_table *table);
 
 int	check_args(int argc, char **argv)
 {
@@ -28,6 +29,16 @@ int	check_args(int argc, char **argv)
 		if (! is_numeric(argv[--argc]))
 			return (0);
 	}
+	if (ft_atoi(argv[1]) <= 0)
+		return (0);
+	if (ft_atoi(argv[2]) < 0)
+		return (0);
+	if (ft_atoi(argv[3]) < 0)
+		return (0);
+	if (ft_atoi(argv[4]) < 0)
+		return (0);
+	if (argc == 6 && ft_atoi(argv[5]) < 0)
+		return (0);
 	return (1);
 }
 
@@ -100,6 +111,8 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	table = table_init(argc, argv);
+	if (table->notepme == 0)
+		return (free_table(table));
 	table->first_phil = create_philos(table);
 	if (create_threads(table) == 0)
 	{

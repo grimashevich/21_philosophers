@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/07 14:33:09 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/07 15:11:36 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,4 @@ int		check_someone_died(t_table *table);
 void	detouch_threads(t_table *table);
 void	increase_eat_count(t_phil *phil);
 
-#endif // PHILO_H
+#endif // PHILO_H	

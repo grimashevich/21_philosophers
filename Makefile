@@ -5,7 +5,7 @@ OBJ_DIR := obj
 CFLAGS := -Wall -Wextra -Werror -g
 CPPFLAGS := -MMD
 # S_FLAGS := -fsanitize=address
-S_FLAGS = -fsanitize=thread
+# S_FLAGS = -fsanitize=thread
 			
 SRC := 	main.c		common01.c	philo01.c	philo02.c	\
 		ft_atoi.c	common02.c	philo03.c				\
