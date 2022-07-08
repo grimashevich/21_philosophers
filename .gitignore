@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 .vscode
-philo
+philo/philo
 *.txt
