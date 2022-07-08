@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 16:32:27 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/07 14:32:08 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/08 19:41:58 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	check_filo_status(t_table *table)
 			phil = phil->next;
 			i++;
 		}
-		if (check_all_eat_well(table))
+		if (table->notepme >= 0 && check_all_eat_well(table))
 			return ;
 		usleep(500);
 	}

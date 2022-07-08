@@ -54,3 +54,5 @@ dkms.conf
 .vscode
 philo/philo
 *.txt
+philo_bonus/philo_bonus
+.DS_Store
