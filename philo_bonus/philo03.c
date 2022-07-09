@@ -74,27 +74,6 @@ int	check_all_eat_well(t_table *table)
 	return (1);
 }
 
-void	check_filo_status(t_table *table)
-{
-	t_phil	*phil;
-	int		i;
-
-	while (1)
-	{
-		i = 0;
-		phil = table->first_phil;
-		while (i < table->phils_count)
-		{
-			if (died_of_hunger(table, phil))
-				return ;
-			phil = phil->next;
-			i++;
-		}
-		if (table->notepme >= 0 && check_all_eat_well(table))
-			return ;
-		usleep(500);
-	}
-}
 
 void	increase_eat_count(t_phil *phil)
 {

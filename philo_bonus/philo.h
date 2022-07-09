@@ -19,9 +19,17 @@
 # include <fcntl.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <signal.h>
 
 # define LLI_MIN "9223372036854775808"
 # define LLI_MAX "9223372036854775807"
+# define SEM_FORKS_NAME "sem_forks"
+# define SEM_PRINT_NAME "sem_print"
+# define SEM_SOD_NAME "sem_someone_die"
 
 typedef pthread_mutex_t	t_mutex;
 typedef struct timeval	t_timeval;
@@ -37,25 +45,16 @@ enum e_state
 typedef struct s_phil
 {
 	int				id;
-	pthread_t		thread_id;
 	enum e_state	state;
-	t_mutex			*state_mutex;
-	struct s_phil	*next;
-	struct s_phil	*prev;
-	t_mutex			*l_fork;
-	t_mutex			*r_fork;
 	long			last_eat_time;
-	t_mutex			*last_eat_time_mutex;
 	int				eat_count;
-	t_mutex			*eat_count_mutex;
 }	t_phil;
 
 typedef struct s_table
 {
-	t_phil		*first_phil;
-	t_mutex		*print_mutex;
-	int			someone_die;
-	t_mutex		*someone_die_mutex;
+	sem_t		*print_sem;
+	sem_t		*forks_sem;
+	sem_t		*sod_sem;
 	t_timeval	*timeval;
 	long		start_time;
 	int			phils_count;
@@ -65,11 +64,6 @@ typedef struct s_table
 	int			notepme;
 }	t_table;
 
-typedef struct s_transfer
-{
-	t_table	*table;
-	t_phil	*phil;
-}	t_transfer;
 
 int		is_numeric(char *str);
 int		ft_atoi(const char *str);

@@ -12,16 +12,26 @@
 
 #include "philo.h"
 
-void	create_phil_mutex(t_phil *phil)
+typedef struct s_phil_ckecklist
 {
-	phil->r_fork = malloc(sizeof(t_mutex));
-	pthread_mutex_init(phil->r_fork, NULL);
-	phil->state_mutex = malloc(sizeof(t_mutex));
-	pthread_mutex_init(phil->state_mutex, NULL);
-	phil->eat_count_mutex = malloc(sizeof(t_mutex));
-	pthread_mutex_init(phil->eat_count_mutex, NULL);
-	phil->last_eat_time_mutex = malloc(sizeof(t_mutex));
-	pthread_mutex_init(phil->last_eat_time_mutex, NULL);
+	int	someone_die;
+	int	notepme;
+}	t_phil_checklist;
+
+
+void	phil_main(t_table *table, t_phil *phil)
+{
+	t_phil_checklist	check_list;
+	
+	//TODO philo_life
+	//TODO check is_phil_alive
+	//TODO check someone_died
+	
+	while (1)
+	{
+		if (check_list.someone_die || check_list.notepme)
+			break;
+	}
 }
 
 t_phil	*create_phil(t_table *table)
@@ -44,28 +54,7 @@ t_phil	*create_phil(t_table *table)
 	return (phil);
 }
 
-void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil)
-{
-	t_phil	*last_phil;
 
-	if (first_phil->next == NULL)
-	{
-		first_phil->next = new_phil;
-		first_phil->prev = new_phil;
-		first_phil->l_fork = new_phil->r_fork;
-		new_phil->next = first_phil;
-		new_phil->prev = first_phil;
-		new_phil->l_fork = first_phil->r_fork;
-		return ;
-	}
-	last_phil = first_phil->prev;
-	new_phil->next = first_phil;
-	new_phil->prev = last_phil;
-	last_phil->next = new_phil;
-	first_phil->prev = new_phil;
-	new_phil->l_fork = last_phil->r_fork;
-	first_phil->l_fork = new_phil->r_fork;
-}
 
 void	phil_say_state(t_table *table, t_phil *phil, int taking_fork)
 {

@@ -42,26 +42,12 @@ int	check_args(int argc, char **argv)
 	return (1);
 }
 
-t_phil	*create_philos(t_table *table)
-{
-	t_phil	*first_phil;
-	int		i;
-
-	first_phil = create_phil(table);
-	i = 1;
-	while (i < table->phils_count)
-	{
-		add_phil_to_table(first_phil, create_phil(table));
-		i++;
-	}
-	return (first_phil);
-}
 
 /*
 Try to create threads
 Return 1 of some error occured, 0 if all ok
 */
-int	create_threads(t_table *table)
+/* int	create_threads(t_table *table)
 {
 	t_phil		*phil;
 	t_transfer	*transfer;
@@ -83,23 +69,8 @@ int	create_threads(t_table *table)
 		n++;
 	}
 	return (0);
-}
+} */
 
-void	join_threads(t_table *table)
-{
-	t_phil		*phil;
-	int			n;
-
-	phil = table->first_phil;
-	n = 1;
-	while (n <= table->phils_count)
-	{
-		if (phil->thread_id != 0)
-			pthread_join(phil->thread_id, NULL);
-		phil = phil->next;
-		n++;
-	}
-}
 
 int	main(int argc, char **argv)
 {
@@ -119,5 +90,67 @@ int	main(int argc, char **argv)
 		check_filo_status(table);
 	}
 	detouch_threads(table);
+	sem_unlink(SEM_FORKS_NAME);
+	sem_unlink(SEM_PRINT_NAME);
 	return (0);
 }
+
+/* 
+void forks_work(int fork_id, sem_t *sem, sem_t *sem_print)
+{
+	int	i = 3;
+
+	while (i > 0)
+	{
+		sem_wait(sem);
+		sem_wait(sem_print);
+		printf("I am fork № %d\n", fork_id);
+		sem_post(sem_print);
+		usleep(500000);
+		sem_post(sem);
+		usleep(500000);
+		if (i == 3 && fork_id == 3)
+		{
+			printf("KILL THEM ALL\n");
+			sem_wait(sem_print);
+			kill(0, SIGTERM);
+		}
+		i--;
+	}
+	
+}
+
+#define FORKS 7
+
+int main(void)
+{
+	sem_t	*sem1;
+	sem_t	*sem_print;
+	int		i;
+	int		forks[FORKS];
+
+	sem_unlink("sem_first");
+	sem_unlink("sem_print");
+	sem1 = sem_open("sem_first", O_CREAT, 0777, 2);
+	sem_print = sem_open("sem_print", O_CREAT, 0777, 1);
+	i = 0;
+
+	while (i < FORKS)
+	{
+		forks[i] = fork();
+		if (forks[i] == 0)
+		{
+			forks_work(i, sem1, sem_print);
+			return (0);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < FORKS)
+	{
+		wait(NULL);
+		i++;
+	}
+	printf("\nDONE\n");
+	
+} */
