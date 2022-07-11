@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 14:14:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/11 11:48:15 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/11 17:55:18 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,15 @@ void	phil_dies(t_table *table, t_phil *phil)
 	pthread_mutex_unlock(table->someone_die_mutex);
 }
 
-void	phil_life(t_table *table, t_phil *phil)
+void	*phil_life(void	*data)
 {
+	t_transfer	*transfer;
+	t_table		*table;
+	t_phil		*phil;
+
+	transfer = (t_transfer *)data;
+	table = transfer->table;
+	phil = transfer->phil;
 	while (1)
 	{
 		take_forks(table, phil);
@@ -57,14 +64,5 @@ void	phil_life(t_table *table, t_phil *phil)
 		my_sleep(table, table->time_to_sleap);
 		switch_life_state(table, phil);
 	}
-}
-
-void	*launch_phil(void *data)
-{
-	t_transfer	*transfer;
-
-	transfer = (t_transfer *)data;
-	phil_life(transfer->table, transfer->phil);
-	free(data);
 	return (NULL);
 }

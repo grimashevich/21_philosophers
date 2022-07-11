@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 16:32:27 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/08 19:41:58 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/11 17:47:36 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,9 @@ void	increase_eat_count(t_phil *phil)
 	pthread_mutex_lock(phil->eat_count_mutex);
 	phil->eat_count++;
 	pthread_mutex_unlock(phil->eat_count_mutex);
+}
+
+void	*check_phil_alive(void *data)
+{
+
 }

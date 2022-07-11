@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/11 11:56:30 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/11 16:55:37 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_phil
 	t_mutex			*someone_died_mutex;
 	t_mutex			*last_eat_time_mutex;
 	t_mutex			*eat_count_mutex;
+	pthread_t		*threads;
 }	t_phil;
 
 typedef struct s_table
@@ -69,6 +70,11 @@ typedef struct s_table
 	int			notepme;
 }	t_table;
 
+typedef struct s_transfer
+{
+	t_table	*table;
+	t_phil	*phil;
+}	t_transfer;
 
 int		is_numeric(char *str);
 int		ft_atoi(const char *str);
@@ -78,7 +84,6 @@ long	get_miliseconds(t_timeval *timeval);
 void	phil_say_state(t_table *table, t_phil *phil, int taking_fork);
 void	my_sleep(t_table *table, int miliseconds);
 int		check_someone_died(t_table *table);
-void	detouch_threads(t_table *table);
 void	increase_eat_count(t_phil *phil);
 
 #endif // PHILO_H	
