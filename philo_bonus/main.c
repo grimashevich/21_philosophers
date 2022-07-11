@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/07 15:10:38 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/11 11:52:14 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_table	*table_init(int argc, char **argv);
 void	*launch_phil(void *data);
 void	check_filo_status(t_table *table);
 int		free_table(t_table *table);
+void	phil_main(t_table *table, t_phil *phil);
 
 int	check_args(int argc, char **argv)
 {
@@ -75,6 +76,8 @@ Return 1 of some error occured, 0 if all ok
 int	main(int argc, char **argv)
 {
 	t_table		*table;
+	int			i;
+	pid_t		cur_pid;
 
 	if (check_args(argc, argv) == 0)
 	{
@@ -84,6 +87,18 @@ int	main(int argc, char **argv)
 	table = table_init(argc, argv);
 	if (table->notepme == 0)
 		return (free_table(table));
+	i = 1;
+	while (i <= table->phils_count)
+	{
+		cur_pid = fork();
+		if (cur_pid == 0)
+		{
+
+			return (0);
+		}
+	}
+	
+	
 	table->first_phil = create_philos(table);
 	if (create_threads(table) == 0)
 	{

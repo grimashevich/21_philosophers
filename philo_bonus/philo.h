@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/08 19:33:46 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/11 11:56:30 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,20 @@ typedef struct s_phil
 {
 	int				id;
 	enum e_state	state;
+	int				someone_died;
 	long			last_eat_time;
 	int				eat_count;
+	t_mutex			*state_mutex;
+	t_mutex			*someone_died_mutex;
+	t_mutex			*last_eat_time_mutex;
+	t_mutex			*eat_count_mutex;
 }	t_phil;
 
 typedef struct s_table
 {
 	sem_t		*print_sem;
 	sem_t		*forks_sem;
-	sem_t		*sod_sem;
+	sem_t		*someone_died_sem;
 	t_timeval	*timeval;
 	long		start_time;
 	int			phils_count;
@@ -67,7 +72,7 @@ typedef struct s_table
 
 int		is_numeric(char *str);
 int		ft_atoi(const char *str);
-t_phil	*create_phil(t_table *table);
+t_phil	*create_phil(t_table *table, int id);
 void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil);
 long	get_miliseconds(t_timeval *timeval);
 void	phil_say_state(t_table *table, t_phil *phil, int taking_fork);

@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 14:14:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/08 19:30:16 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/11 11:48:15 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,10 @@ int		died_of_hunger(t_table *table, t_phil *phil);
 
 void	take_forks(t_table *table, t_phil *phil)
 {
-	if (phil->id == table->phils_count)
-	{
-		pthread_mutex_lock(phil->l_fork);
-		phil_say_state(table, phil, 1);
-		pthread_mutex_lock(phil->r_fork);
-		phil_say_state(table, phil, 1);
-	}
-	else
-	{
-		pthread_mutex_lock(phil->r_fork);
-		phil_say_state(table, phil, 1);
-		pthread_mutex_lock(phil->l_fork);
-		phil_say_state(table, phil, 1);
-	}
+	sem_wait(table->forks_sem);
+	phil_say_state(table, phil, 1);
+	sem_wait(table->forks_sem);
+	phil_say_state(table, phil, 1);
 	pthread_mutex_lock(phil->last_eat_time_mutex);
 	phil->last_eat_time = get_miliseconds(table->timeval);
 	pthread_mutex_unlock(phil->last_eat_time_mutex);
@@ -39,16 +29,8 @@ void	take_forks(t_table *table, t_phil *phil)
 
 void	put_forks_back(t_table *table, t_phil *phil)
 {
-	if (phil->id == table->phils_count)
-	{
-		pthread_mutex_unlock(phil->r_fork);
-		pthread_mutex_unlock(phil->l_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(phil->l_fork);
-		pthread_mutex_unlock(phil->r_fork);
-	}
+	sem_post(table->forks_sem);
+	sem_post(table->forks_sem);
 }
 
 void	phil_dies(t_table *table, t_phil *phil)
@@ -64,8 +46,6 @@ void	phil_dies(t_table *table, t_phil *phil)
 
 void	phil_life(t_table *table, t_phil *phil)
 {
-	if (phil->id % 2 == 0)
-		my_sleep(table, table->time_to_eat);
 	while (1)
 	{
 		take_forks(table, phil);
@@ -76,8 +56,6 @@ void	phil_life(t_table *table, t_phil *phil)
 		switch_life_state(table, phil);
 		my_sleep(table, table->time_to_sleap);
 		switch_life_state(table, phil);
-		if (check_someone_died(table))
-			return ;
 	}
 }
 
