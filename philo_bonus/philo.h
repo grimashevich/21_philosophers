@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/11 16:55:37 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/12 16:53:26 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ typedef struct s_phil
 	int				someone_died;
 	long			last_eat_time;
 	int				eat_count;
+	int				ate_enough;
 	t_mutex			*state_mutex;
 	t_mutex			*someone_died_mutex;
 	t_mutex			*last_eat_time_mutex;
 	t_mutex			*eat_count_mutex;
+	t_mutex			*ate_enough_mutex;
 	pthread_t		*threads;
 }	t_phil;
 
@@ -83,7 +85,7 @@ void	add_phil_to_table(t_phil *first_phil, t_phil *new_phil);
 long	get_miliseconds(t_timeval *timeval);
 void	phil_say_state(t_table *table, t_phil *phil, int taking_fork);
 void	my_sleep(t_table *table, int miliseconds);
-int		check_someone_died(t_table *table);
-void	increase_eat_count(t_phil *phil);
+void	*check_someone_died(void *data);
+void	increase_eat_count(t_phil *phil, t_table *table);
 
 #endif // PHILO_H	

@@ -6,14 +6,13 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 14:14:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/11 17:55:18 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/12 16:52:42 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 void	switch_life_state(t_table *table, t_phil *phil);
-void	increase_eat_count(t_phil *phil);
 int		died_of_hunger(t_table *table, t_phil *phil);
 
 void	take_forks(t_table *table, t_phil *phil)
@@ -33,7 +32,7 @@ void	put_forks_back(t_table *table, t_phil *phil)
 	sem_post(table->forks_sem);
 }
 
-void	phil_dies(t_table *table, t_phil *phil)
+/* void	phil_dies(t_table *table, t_phil *phil)
 {
 	pthread_mutex_lock(phil->state_mutex);
 	phil->state = DIED;
@@ -42,7 +41,7 @@ void	phil_dies(t_table *table, t_phil *phil)
 	pthread_mutex_lock(table->someone_die_mutex);
 	table->someone_die = 1;
 	pthread_mutex_unlock(table->someone_die_mutex);
-}
+} */
 
 void	*phil_life(void	*data)
 {
@@ -59,7 +58,7 @@ void	*phil_life(void	*data)
 		switch_life_state(table, phil);
 		my_sleep(table, table->time_to_eat);
 		put_forks_back(table, phil);
-		increase_eat_count(phil);
+		increase_eat_count(phil, table);
 		switch_life_state(table, phil);
 		my_sleep(table, table->time_to_sleap);
 		switch_life_state(table, phil);

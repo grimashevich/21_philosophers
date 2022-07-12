@@ -6,12 +6,15 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:25:20 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/11 17:46:29 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/12 17:51:48 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 void	phil_life(t_table *table, t_phil *phil);
+void	*check_phil_alive(void *data);
+int	check_sod_notepme(t_table *table, t_phil *phil);
+void	detach_phil_threads(t_phil *phil);
 
 typedef struct s_phil_ckecklist
 {
@@ -30,17 +33,17 @@ void	phil_main(t_table *table, t_phil *phil)
 	transfer->phil = phil;
 	transfer->table = table;
 	
-	//TODO philo_life
 	pthread_create(&(phil->threads[0]), NULL, phil_life, transfer);
-	
-	//TODO check is_phil_alive
 	pthread_create(&(phil->threads[1]), NULL, check_phil_alive, transfer);
-	//TODO check someone_died
+	pthread_create(&(phil->threads[2]), NULL, check_someone_died, transfer);
 	
 	while (1)
 	{
-		if (check_list.someone_die || check_list.notepme)
-			break;
+		if (check_sod_notepme(table, phil))
+		{
+			detach_phil_threads(phil);
+			break ;
+		}
 	}
 }
 
@@ -54,6 +57,8 @@ void	create_phil_mutex(t_phil *phil)
 	pthread_mutex_init(phil->eat_count_mutex, NULL);
 	phil->last_eat_time_mutex = malloc(sizeof(t_mutex));
 	pthread_mutex_init(phil->last_eat_time_mutex, NULL);
+	phil->ate_enough_mutex = malloc(sizeof(t_mutex));
+	pthread_mutex_init(phil->ate_enough_mutex, NULL);
 }
 
 t_phil	*create_phil(t_table *table, int id)
@@ -65,9 +70,9 @@ t_phil	*create_phil(t_table *table, int id)
 		return (NULL);
 	phil->id = id;
 	phil->someone_died = 0;
-
 	phil->state = THINKING;
 	phil->eat_count = 0;
+	phil->ate_enough = 0;
 	phil->last_eat_time = get_miliseconds(table->timeval);
 	phil->threads = malloc(sizeof(pthread_t *) * 4);
 	phil->threads[3] = NULL;

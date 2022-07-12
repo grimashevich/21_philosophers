@@ -6,15 +6,32 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 16:32:27 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/11 17:47:36 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/12 17:47:38 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	phil_dies(t_table *table, t_phil *phil);
+int	check_sod_notepme(t_table *table, t_phil *phil)
+{
+	pthread_mutex_lock(phil->someone_died_mutex);
+	if (phil->someone_died)
+		return (1);
+	pthread_mutex_unlock(phil->someone_died_mutex);
+	pthread_mutex_lock(phil->ate_enough_mutex);
+	if (phil->ate_enough)
+		return (1);
+	pthread_mutex_unlock(phil->ate_enough_mutex);
+}
 
-int	died_of_hunger(t_table *table, t_phil *phil)
+void	detach_phil_threads(t_phil *phil)
+{
+	pthread_detach(phil->threads[0]);
+	pthread_detach(phil->threads[1]);
+	pthread_detach(phil->threads[2]);
+}
+
+/* int	died_of_hunger(t_table *table, t_phil *phil)
 {
 	long	cur_time;
 
@@ -36,20 +53,10 @@ int	died_of_hunger(t_table *table, t_phil *phil)
 	}
 	pthread_mutex_unlock(phil->last_eat_time_mutex);
 	return (0);
-}
-
-int	check_someone_died(t_table *table)
-{
-	int	result;
-
-	pthread_mutex_lock(table->someone_die_mutex);
-	result = table->someone_die;
-	pthread_mutex_unlock(table->someone_die_mutex);
-	return (result);
-}
+} */
 
 /* Return 1 if all philos eat needed times */
-int	check_all_eat_well(t_table *table)
+/* int	check_all_eat_well(t_table *table)
 {
 	int		n;
 	t_phil	*phil;
@@ -72,17 +79,19 @@ int	check_all_eat_well(t_table *table)
 	}
 	pthread_mutex_lock(table->print_mutex);
 	return (1);
-}
+} */
 
 
-void	increase_eat_count(t_phil *phil)
+void	increase_eat_count(t_phil *phil, t_table *table)
 {
+	int	eat_count;
+
 	pthread_mutex_lock(phil->eat_count_mutex);
-	phil->eat_count++;
+	eat_count = phil->eat_count++;
 	pthread_mutex_unlock(phil->eat_count_mutex);
-}
-
-void	*check_phil_alive(void *data)
-{
-
+	if (table->notepme  < 0)
+	pthread_mutex_lock(phil->ate_enough_mutex);
+	if (eat_count >= table->notepme)
+		phil->ate_enough = 1;
+	pthread_mutex_unlock(phil->ate_enough_mutex);
 }
