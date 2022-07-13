@@ -6,14 +6,14 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:25:20 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/12 17:51:48 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/13 14:28:52 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-void	phil_life(t_table *table, t_phil *phil);
+void	*phil_life(void	*data);
 void	*check_phil_alive(void *data);
-int	check_sod_notepme(t_table *table, t_phil *phil);
+int		check_sod_notepme(t_table *table, t_phil *phil);
 void	detach_phil_threads(t_phil *phil);
 
 typedef struct s_phil_ckecklist
@@ -25,9 +25,7 @@ typedef struct s_phil_ckecklist
 
 void	phil_main(t_table *table, t_phil *phil)
 {
-	t_phil_checklist	check_list;
 	t_transfer			*transfer;
-	int					status;
 	
 	transfer = malloc(sizeof(transfer));
 	transfer->phil = phil;
@@ -41,9 +39,13 @@ void	phil_main(t_table *table, t_phil *phil)
 	{
 		if (check_sod_notepme(table, phil))
 		{
+				sem_wait(table->print_sem);
+				printf("CLOSING PHIL # %d\n", phil->id);
+				sem_post(table->print_sem);
 			detach_phil_threads(phil);
 			break ;
 		}
+		usleep(500);
 	}
 }
 

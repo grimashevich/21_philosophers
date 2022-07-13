@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 14:14:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/12 16:52:42 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/13 14:15:49 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	take_forks(t_table *table, t_phil *phil)
 	pthread_mutex_unlock(phil->last_eat_time_mutex);
 }
 
-void	put_forks_back(t_table *table, t_phil *phil)
+void	put_forks_back(t_table *table)
 {
 	sem_post(table->forks_sem);
 	sem_post(table->forks_sem);
@@ -57,7 +57,7 @@ void	*phil_life(void	*data)
 		take_forks(table, phil);
 		switch_life_state(table, phil);
 		my_sleep(table, table->time_to_eat);
-		put_forks_back(table, phil);
+		put_forks_back(table);
 		increase_eat_count(phil, table);
 		switch_life_state(table, phil);
 		my_sleep(table, table->time_to_sleap);

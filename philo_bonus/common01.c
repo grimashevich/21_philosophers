@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:07:47 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/11 11:44:10 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/13 14:44:40 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ t_table	*table_init(int argc, char **argv)
 		table->notepme = ft_atoi(argv[5]);
 	return (table);
 	table->forks_sem = sem_open(SEM_FORKS_NAME, O_CREAT, 0777, table->phils_count);
-	table->print_sem = sem_open(SEM_PRINT_NAME, O_CREAT, 0777, 2);
-	table->someone_died_sem = sem_open(SEM_SOD_NAME, O_CREAT, 0777, 2);
+	table->print_sem = sem_open(SEM_PRINT_NAME, O_CREAT, 0777, 1);
+	table->someone_died_sem = sem_open(SEM_SOD_NAME, O_CREAT, 0777, 0);
 }
 
 /* sleep in miliseconds */

@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:05:09 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/11 15:59:38 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/13 14:26:20 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	launch_phil(t_table *table)
 {
 	int			i;
 	pid_t		cur_pid;
-	t_phil		*phil;
 
 	i = 1;
 	while (i <= table->phils_count)
@@ -104,9 +103,13 @@ int	main(int argc, char **argv)
 	table = table_init(argc, argv);
 	if (table->notepme == 0)
 		return (free_table(table));
-	if (launch_phil == 1)
+	if (launch_phil(table) == 1)
 		return (0);
-	
+	while (table->phils_count)
+	{
+		wait(NULL);
+		table->phils_count--;
+	}
 	sem_unlink(SEM_FORKS_NAME);
 	sem_unlink(SEM_PRINT_NAME);
 	return (0);

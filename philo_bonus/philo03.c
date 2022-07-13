@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 16:32:27 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/12 17:47:38 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/13 14:29:54 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,26 @@
 
 int	check_sod_notepme(t_table *table, t_phil *phil)
 {
+	(void) table;
 	pthread_mutex_lock(phil->someone_died_mutex);
 	if (phil->someone_died)
+	{
+				sem_wait(table->print_sem);
+				printf("SOMEONE DIED say: PHIL # %d\n", phil->id);
+				sem_post(table->print_sem);
 		return (1);
+	}
 	pthread_mutex_unlock(phil->someone_died_mutex);
 	pthread_mutex_lock(phil->ate_enough_mutex);
 	if (phil->ate_enough)
+	{
+				sem_wait(table->print_sem);
+				printf("ATE ENOUGHT say: PHIL # %d\n", phil->id);
+				sem_post(table->print_sem);
 		return (1);
+	}
 	pthread_mutex_unlock(phil->ate_enough_mutex);
+	return (0);
 }
 
 void	detach_phil_threads(t_phil *phil)
