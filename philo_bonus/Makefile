@@ -7,9 +7,9 @@ CPPFLAGS := -MMD
 # S_FLAGS := -fsanitize=address
 # S_FLAGS = -fsanitize=thread
 			
-SRC := 	main.c		common01.c	philo01.c	philo02.c	\
-		ft_atoi.c	common02.c	philo03.c	philo04.c	\
-					common03.c
+SRC := 	main.c		common01.c	philo01.c	\
+		ft_atoi.c	common02.c	philo02.c	\
+								philo03.c
 
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 
@@ -17,10 +17,10 @@ DEP := $(OBJ:.o=.d)
 
 .PHONY: all clean fclean re bonus
 
-all:	$(NAME)
+all: Makefile	$(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(LDFLAGS) $(OBJ) $(LDLIBS) $(S_FLAGS) -o $(NAME)
+	$(CC) $(LDFLAGS) $(OBJ) $(LDLIBS) $(S_FLAGS) -lpthread -o $(NAME)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(S_FLAGS) -c $< -o $@

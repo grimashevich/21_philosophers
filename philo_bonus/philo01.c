@@ -6,42 +6,33 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:25:20 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/13 14:28:52 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/14 19:08:30 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
 void	*phil_life(void	*data);
 void	*check_phil_alive(void *data);
 int		check_sod_notepme(t_table *table, t_phil *phil);
 void	detach_phil_threads(t_phil *phil);
 
-typedef struct s_phil_ckecklist
-{
-	int	someone_die;
-	int	notepme;
-}	t_phil_checklist;
-
-
 void	phil_main(t_table *table, t_phil *phil)
 {
 	t_transfer			*transfer;
-	
+
 	transfer = malloc(sizeof(transfer));
 	transfer->phil = phil;
 	transfer->table = table;
-	
+	if (phil->id % 2 == 0)
+		usleep(500);
 	pthread_create(&(phil->threads[0]), NULL, phil_life, transfer);
 	pthread_create(&(phil->threads[1]), NULL, check_phil_alive, transfer);
 	pthread_create(&(phil->threads[2]), NULL, check_someone_died, transfer);
-	
 	while (1)
 	{
 		if (check_sod_notepme(table, phil))
 		{
-				sem_wait(table->print_sem);
-				printf("CLOSING PHIL # %d\n", phil->id);
-				sem_post(table->print_sem);
 			detach_phil_threads(phil);
 			break ;
 		}
@@ -81,8 +72,6 @@ t_phil	*create_phil(t_table *table, int id)
 	create_phil_mutex(phil);
 	return (phil);
 }
-
-
 
 void	phil_say_state(t_table *table, t_phil *phil, int taking_fork)
 {

@@ -6,7 +6,7 @@
 /*   By: EClown <eclown@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:29:39 by EClown            #+#    #+#             */
-/*   Updated: 2022/07/13 14:59:09 by EClown           ###   ########.fr       */
+/*   Updated: 2022/07/14 18:40:54 by EClown           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 
 # define LLI_MIN "9223372036854775808"
 # define LLI_MAX "9223372036854775807"
-# define SEM_FORKS_NAME "sem_forks"
-# define SEM_PRINT_NAME "sem_print"
-# define SEM_SOD_NAME "sem_someone_die"
+# define SEM_FORKS_NAME "/sem_forks"
+# define SEM_PRINT_NAME "/sem_print"
+# define SEM_SOD_NAME "/sem_someone_die"
 
 typedef pthread_mutex_t	t_mutex;
 typedef struct timeval	t_timeval;
@@ -70,7 +70,6 @@ typedef struct s_table
 	int			time_to_eat;
 	int			time_to_sleap;
 	int			notepme;
-	int			sod_value; //TODO DELETE IT
 }	t_table;
 
 typedef struct s_transfer
@@ -88,13 +87,5 @@ void	phil_say_state(t_table *table, t_phil *phil, int taking_fork);
 void	my_sleep(t_table *table, int miliseconds);
 void	*check_someone_died(void *data);
 void	increase_eat_count(t_phil *phil, t_table *table);
-
-void print_sod_sem_value(t_table *table)
-{
-	sem_wait(table->print_sem);
-	printf("sem SOD is %d\n", 
-		sem_getvalue(table->someone_died_sem, &(table->sod_value)));
-	sem_post(table->print_sem);
-}
 
 #endif // PHILO_H	
